@@ -29,7 +29,7 @@ git clone git@github.com:blondegeek/e3nn_tutorial.git
 ```
 <font color="green"><b>WARNING: Tess is still actively changing these notebooks, so pull frequently. :) </b></font>
 
-Tutorial notebooks:
+### Tutorial notebooks:
 * Data types: Going between geometric tensors in Cartesian and spherical harmonic bases and representation lists (`Rs`) in `se3cnn`
   * ( [notebook](https://github.com/blondegeek/e3nn_tutorial/blob/master/data_types.ipynb) // [html](https://github.com/blondegeek/e3nn_tutorial/blob/master/data_types.html) )
 * Simple Tasks and Symmetry: Using equivariant networks can have unintuitive consequences, we use 3 simple tasks to illustrate how network outputs must have equal or higher symmetry than inputs.
