@@ -17,13 +17,17 @@ University of California, Los Angeles
 Forthcoming...
 
 ## Code
-For code examples, we will be using the [`se3cnn` repository](https://github.com/mariogeiger/se3cnn). Installation instructions can be found [here](https://github.com/mariogeiger/se3cnn/#installation).
+For code examples, we will be using the [`se3cnn` repository](https://github.com/mariogeiger/se3cnn). Installation instructions can be found [here](https://github.com/mariogeiger/se3cnn/#installation). To test your installation of `se3cnn`, we recommend running the [following code example](https://github.com/mariogeiger/se3cnn/blob/point/examples/point/tetris.py).
 
-To test your installation of `se3cnn`, we recommend running the [following code example](https://github.com/mariogeiger/se3cnn/blob/point/examples/point/tetris.py).
+To follow along during the tutorial, we recommend you clone the tutorial repository in addition to installing `se3cnn`.
+```
+git clone git@github.com:blondegeek/e3nn_tutorial.git
+```
+<font color="green"><b>WARNING: Tess is still actively changing these notebooks, so pull frequently. :) </b></font>
 
 Tutorial notebooks:
-* Data types
-* Simple Tasks and Symmetry: 
+* Data types: ( [notebook](https://github.com/blondegeek/e3nn_tutorial/blob/master/data_types.ipynb) | html )
+* Simple Tasks and Symmetry: ( [notebook](https://github.com/blondegeek/e3nn_tutorial/blob/master/simple_tasks_and_symmetry.ipynb) | html )
 
 ## Recommended Reading
 * [Cormorant: Covariant Molecular Neural Networks](https://arxiv.org/abs/1906.04015)
