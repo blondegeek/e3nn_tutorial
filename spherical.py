@@ -3,6 +3,7 @@ import torch
 import utils
 import se3cnn.SO3
 
+__authors__  = "Tess E. Smidt, Mario Geiger"
 
 def direct_sum(*matrices):
     # Slight modification of se3cnn.SO3.direct_sum

@@ -5,6 +5,7 @@ from se3cnn.util.cache_file import cached_dirpklgz
 import se3cnn.SO3
 import se3cnn.util.plot as plot
 
+__author__  = "Tess E. Smidt"
 
 @cached_dirpklgz("cache/euler_grids")
 def euler_angles_on_grid(n):
