@@ -3,7 +3,7 @@
 ## Spacetime coordinates
 Thursday, November 14, 2019
 <br>
-2:00 - 5:00 pm
+10:00 am - noon, 1:30 - 2:30 pm
 <br>
 Main Lecture Hall
 <br>
@@ -21,7 +21,9 @@ For code examples, we will be using the [`se3cnn` repository](https://github.com
 
 To test your installation of `se3cnn`, we recommend running the [following code example](https://github.com/mariogeiger/se3cnn/blob/point/examples/point/tetris.py).
 
-Tutorial notebooks are forthcoming...
+Tutorial notebooks:
+* Data types
+* Simple Tasks and Symmetry: 
 
 ## Recommended Reading
 * [Cormorant: Covariant Molecular Neural Networks](https://arxiv.org/abs/1906.04015)
