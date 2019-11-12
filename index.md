@@ -14,7 +14,11 @@ University of California, Los Angeles
 ## Tutors: [Tess E. Smidt](https://crd.lbl.gov/departments/computational-science/ccmc/staff/alvarez-fellows/tess-smidt/) and [Risi Kondor](http://people.cs.uchicago.edu/~risi/)
 
 ## Agenda
-Forthcoming...
+###10:00 am - noon
+Tutorials with lecture and code
+
+###1:30 - 2:30 pm
+Remaining topics and open discussion
 
 ## Code
 For code examples, we will be using the [`se3cnn` repository](https://github.com/mariogeiger/se3cnn). Installation instructions can be found [here](https://github.com/mariogeiger/se3cnn/#installation). To test your installation of `se3cnn`, we recommend running the [following code example](https://github.com/mariogeiger/se3cnn/blob/point/examples/point/tetris.py).
