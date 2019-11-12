@@ -26,6 +26,6 @@ Tutorial notebooks are forthcoming...
 * [3D Steerable CNNs: Learning Rotationally Equivariant Features in Volumetric Data](https://arxiv.org/abs/1807.02547)
   * Maurice Weiler, Mario Geiger, Max Welling, Wouter Boomsma, Taco Cohen
 
-* [Tensor field networks: Rotation- and translation-equivariant neural networks for 3D point clouds](https://arxiv.org/abs/1906.04015)
+* [Tensor field networks: Rotation- and translation-equivariant neural networks for 3D point clouds](https://arxiv.org/abs/1802.08219)
   * Nathaniel Thomas, Tess Smidt, Steven Kearnes, Lusann Yang, Li Li, Kai Kohlhoff, Patrick Riley
 
