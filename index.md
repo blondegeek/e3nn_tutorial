@@ -11,7 +11,7 @@ Institute for Pure and Applied Mathematics (IPAM)
 <br>
 University of California, Los Angeles
 
-## Tutors: Tess E. Smidt and Risi Kondor
+## Tutors: [Tess E. Smidt](https://crd.lbl.gov/departments/computational-science/ccmc/staff/alvarez-fellows/tess-smidt/) and [Risi Kondor](http://people.cs.uchicago.edu/~risi/)
 
 ## Agenda
 Forthcoming...
