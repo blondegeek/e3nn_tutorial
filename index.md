@@ -2,9 +2,13 @@
 
 ## Spacetime coordinates
 Thursday, November 14, 2019
+<br>
 2:00 - 5:00 pm
+<br>
 Main Lecture Hall
+<br>
 Institute for Pure and Applied Mathematics (IPAM)
+<br>
 University of California, Los Angeles
 
 ## Tutors: Tess E. Smidt and Risi Kondor
