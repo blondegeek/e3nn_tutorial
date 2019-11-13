@@ -56,7 +56,7 @@ Be sure to unzip the `cache.zip` which has all Clebsch-Gordon tensors up to L=10
   * ( [notebook](https://github.com/blondegeek/e3nn_tutorial/blob/master/data_types.ipynb) // [html](https://github.com/blondegeek/e3nn_tutorial/blob/master/data_types.html) )
 * Simple Tasks and Symmetry: Using equivariant networks can have unintuitive consequences, we use 3 simple tasks to illustrate how network outputs must have equal or higher symmetry than inputs.
   * ( [notebook](https://github.com/blondegeek/e3nn_tutorial/blob/master/simple_tasks_and_symmetry.ipynb) // [html](https://github.com/blondegeek/e3nn_tutorial/blob/master/simple_tasks_and_symmetry.html) )
-* Nuts and Bolts of `se3cnn`: A step by step walkthrough of how to set up a convoltion and what is going on with all those `partial`s.
+* Nuts and Bolts of `se3cnn`: A step by step walkthrough of how to set up a convolution and what is going on with all those `partial`s.
   * ( [notebook](https://github.com/blondegeek/e3nn_tutorial/blob/master/nuts_and_bolts_of_se3cnn.ipynb) )
 
 #### Why notebook AND html?
