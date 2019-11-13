@@ -13,6 +13,10 @@ University of California, Los Angeles
 
 ## Tutors: [Tess E. Smidt](https://crd.lbl.gov/departments/computational-science/ccmc/staff/alvarez-fellows/tess-smidt/) and [Risi Kondor](http://people.cs.uchicago.edu/~risi/)
 
+### A special thanks to [IPAM](http://www.ipam.ucla.edu/) and the organizers of the ["Machine Learning for Physics and the Physics of Learning" Long Program](https://www.ipam.ucla.edu/programs/long-programs/machine-learning-for-physics-and-the-physics-of-learning/?tab=overview) for hosting the tutorial, especially Christian Ratsch, Frank Noe and Cecilia Clementi. 
+
+#### Tess would also like to thank [Mario Geiger](https://mariogeiger.ch/), [Ben Miller](http://mathben.com/), [Kostiantyn Lapchevskyi](https://www.linkedin.com/in/klsky/), [Daniel Murnane](https://www.linkedin.com/in/daniel-murnane-01277031/), and [Sean Lubner](https://eta.lbl.gov/people/Sean-Lubner) for many conversations that lead to the generation of the tutorial notebooks. And another thank you to Mario, Ben, and Kostiantyn for all that they do for the `se3cnn` repo.
+
 * * *
 
 ## Agenda
