@@ -5,6 +5,8 @@ import se3cnn.SO3
 
 __authors__  = "Tess E. Smidt, Mario Geiger"
 
+torch.set_default_dtype(torch.float64)
+
 def direct_sum(*matrices):
     # Slight modification of se3cnn.SO3.direct_sum
     """
@@ -169,6 +171,12 @@ class SphericalTensor():
         peaks = torch.stack([xyz[i, j] for i, j in peaks]) if peaks else torch.empty(0, 3)
         return peaks, radius
 
+    def __add__(self, other):
+        if self.Rs == other.Rs:
+            from copy import deepcopy
+            return SphericalTensor(self.signal + other.signal,
+                                   deepcopy(self.Rs))
+
     def __mul__(self, other):
         # Dot product if Rs of both objects match
         # Add check for feature_Rs.
@@ -181,8 +189,10 @@ class SphericalTensor():
         # Tensor product
         # Assume first index is Rs
         # Better handle mismatch of features indices
-        Rs_out, Q = se3cnn.SO3.reduce_tensor_product(self.Rs, other.Rs)
-        new_signal = torch.einsum('ijk,i...,j...->k...')
+        Rs_out, C = se3cnn.SO3.reduce_tensor_product(self.Rs, other.Rs)
+        Rs_out = [(mult, L) for mult, L, parity in Rs_out]
+        new_signal = torch.einsum('ijk,i...,j...->k...', 
+                                  (C, self.signal, other.signal))
         return SphericalTensor(new_signal, Rs_out)
 
     def __rmatmul__(self, other):
