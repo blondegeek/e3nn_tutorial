@@ -1,5 +1,5 @@
 # E(3) Equivariant Neural Network Tutorial
-( <a href=#coords>Spacetime coordinates</a> // <a href=#coords>Recommended Reading</a> // <a href=#code>Code</a> )
+( [Spacetime coordinates](#coords) // [Recommended Reading](#reading) // [Code](#code) )
 
 ### Tutors: [Tess E. Smidt](https://crd.lbl.gov/departments/computational-science/ccmc/staff/alvarez-fellows/tess-smidt/) and [Risi Kondor](http://people.cs.uchicago.edu/~risi/)
 
