@@ -1,6 +1,15 @@
 # E(3) Equivariant Neural Network Tutorial
+( <a href=#coords>Spacetime coordinates</a> // <a href=#coords>Recommended Reading</a> // <a href=#code>Code</a> )
 
-## Spacetime coordinates
+### Tutors: [Tess E. Smidt](https://crd.lbl.gov/departments/computational-science/ccmc/staff/alvarez-fellows/tess-smidt/) and [Risi Kondor](http://people.cs.uchicago.edu/~risi/)
+
+### A special thanks to [IPAM](http://www.ipam.ucla.edu/) and the organizers of the ["Machine Learning for Physics and the Physics of Learning" Long Program](https://www.ipam.ucla.edu/programs/long-programs/machine-learning-for-physics-and-the-physics-of-learning/?tab=overview) for hosting the tutorial, especially Christian Ratsch, Frank Noe and Cecilia Clementi. 
+
+#### Tess would also like to thank [Mario Geiger](https://mariogeiger.ch/), [Ben Miller](http://mathben.com/), [Kostiantyn Lapchevskyi](https://www.linkedin.com/in/klsky/) for all they do for the `se3cnn` repo and them, [Daniel Murnane](https://www.linkedin.com/in/daniel-murnane-01277031/), and [Sean Lubner](https://eta.lbl.gov/people/Sean-Lubner) for many conversations that lead to the generation of the tutorial notebooks.
+
+* * *
+
+## Spacetime coordinates {#coords}
 Thursday, November 14, 2019
 <br>
 10:00 am - noon, 1:30 - 2:30 pm
@@ -11,15 +20,6 @@ Institute for Pure and Applied Mathematics (IPAM)
 <br>
 University of California, Los Angeles
 
-## Tutors: [Tess E. Smidt](https://crd.lbl.gov/departments/computational-science/ccmc/staff/alvarez-fellows/tess-smidt/) and [Risi Kondor](http://people.cs.uchicago.edu/~risi/)
-
-### A special thanks to [IPAM](http://www.ipam.ucla.edu/) and the organizers of the ["Machine Learning for Physics and the Physics of Learning" Long Program](https://www.ipam.ucla.edu/programs/long-programs/machine-learning-for-physics-and-the-physics-of-learning/?tab=overview) for hosting the tutorial, especially Christian Ratsch, Frank Noe and Cecilia Clementi. 
-
-#### Tess would also like to thank [Mario Geiger](https://mariogeiger.ch/), [Ben Miller](http://mathben.com/), [Kostiantyn Lapchevskyi](https://www.linkedin.com/in/klsky/), [Daniel Murnane](https://www.linkedin.com/in/daniel-murnane-01277031/), and [Sean Lubner](https://eta.lbl.gov/people/Sean-Lubner) for many conversations that lead to the generation of the tutorial notebooks. And another thank you to Mario, Ben, and Kostiantyn for all that they do for the `se3cnn` repo.
-
-* * *
-
-## Agenda
 ### 10:00 am - noon
 Tutorials with lecture and code
 
@@ -28,7 +28,7 @@ Remaining topics and open discussion
 
 * * *
 
-## Recommended Reading
+## Recommended Reading {#reading}
 * [Cormorant: Covariant Molecular Neural Networks](https://arxiv.org/abs/1906.04015)
   * Brandon Anderson, Truong-Son Hy, Risi Kondor
 
@@ -40,13 +40,15 @@ Remaining topics and open discussion
 
 * * *
 
-## Code
+## Code {#code}
 For code examples, we will be using the [`se3cnn` repository](https://github.com/mariogeiger/se3cnn). Installation instructions can be found [here](https://github.com/mariogeiger/se3cnn/#installation). To test your installation of `se3cnn`, we recommend running the [following code example](https://github.com/mariogeiger/se3cnn/blob/point/examples/point/tetris.py).
 
 To follow along during the tutorial, we recommend you clone the tutorial repository in addition to installing `se3cnn`.
 ```
 git clone git@github.com:blondegeek/e3nn_tutorial.git
 ```
+
+Be sure to unzip the `cache.zip` which has all Clebsch-Gordon tensors up to L=10 so that you don't have to compute these locally.
 
 ### Tutorial notebooks
 <font color="green"><b>WARNING: Tess is still actively changing these notebooks, so pull frequently. :) </b></font>
