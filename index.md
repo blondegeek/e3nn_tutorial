@@ -43,6 +43,9 @@ git clone git@github.com:blondegeek/e3nn_tutorial.git
 
 #### Why notebook AND html?
 For the notebooks that use `plotly` the notebooks are distributed without cells executed because the plots are large (because Tess made them too high-resolution... oops.). If you download the HTML verison, you can interact with the plots without needing to execute the code.
+
+#### Got feedback on the code tutorials?
+Tess wants to hear all about it, so please, please, please right Tess an email at `tsmidt@lbl.gov` or `blondegeek@gmail.com`! The goal is to make these notebooks maximally useful to others. 
 * * *
 
 ## Recommended Reading
