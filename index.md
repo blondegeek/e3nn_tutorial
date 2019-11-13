@@ -24,6 +24,18 @@ Remaining topics and open discussion
 
 * * *
 
+## Recommended Reading
+* [Cormorant: Covariant Molecular Neural Networks](https://arxiv.org/abs/1906.04015)
+  * Brandon Anderson, Truong-Son Hy, Risi Kondor
+
+* [3D Steerable CNNs: Learning Rotationally Equivariant Features in Volumetric Data](https://arxiv.org/abs/1807.02547)
+  * Maurice Weiler, Mario Geiger, Max Welling, Wouter Boomsma, Taco Cohen
+
+* [Tensor field networks: Rotation- and translation-equivariant neural networks for 3D point clouds](https://arxiv.org/abs/1802.08219)
+  * Nathaniel Thomas, Tess Smidt, Steven Kearnes, Lusann Yang, Li Li, Kai Kohlhoff, Patrick Riley
+
+* * *
+
 ## Code
 For code examples, we will be using the [`se3cnn` repository](https://github.com/mariogeiger/se3cnn). Installation instructions can be found [here](https://github.com/mariogeiger/se3cnn/#installation). To test your installation of `se3cnn`, we recommend running the [following code example](https://github.com/mariogeiger/se3cnn/blob/point/examples/point/tetris.py).
 
@@ -47,14 +59,4 @@ For the notebooks that use `plotly` the notebooks are distributed without cells 
 #### Got feedback on the code tutorials?
 Tess wants to hear all about it, so please, please, please write Tess an email at `tsmidt@lbl.gov` or `blondegeek@gmail.com`! The goal is to make these notebooks maximally useful to others. 
 * * *
-
-## Recommended Reading
-* [Cormorant: Covariant Molecular Neural Networks](https://arxiv.org/abs/1906.04015)
-  * Brandon Anderson, Truong-Son Hy, Risi Kondor
-
-* [3D Steerable CNNs: Learning Rotationally Equivariant Features in Volumetric Data](https://arxiv.org/abs/1807.02547)
-  * Maurice Weiler, Mario Geiger, Max Welling, Wouter Boomsma, Taco Cohen
-
-* [Tensor field networks: Rotation- and translation-equivariant neural networks for 3D point clouds](https://arxiv.org/abs/1802.08219)
-  * Nathaniel Thomas, Tess Smidt, Steven Kearnes, Lusann Yang, Li Li, Kai Kohlhoff, Patrick Riley
 
