@@ -41,7 +41,10 @@ def adjusted_projection(vectors, L_max, sum_points=True, radius=True):
     coeff *= radii.unsqueeze(-2)
     
     A = torch.einsum("ia,ib->ab", (se3cnn.SO3.spherical_harmonics(list(range(L_max + 1)), *angles), coeff))
-    coeff *= torch.lstsq(radii, A).solution.view(-1)
+    try:
+        coeff *= torch.lstsq(radii, A).solution.view(-1)
+    except:
+        coeff *= torch.gels(radii, A).solution.view(-1)
     return coeff.sum(-1) if sum_points else coeff
 
 
