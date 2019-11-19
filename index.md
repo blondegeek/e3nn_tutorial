@@ -53,7 +53,7 @@ Be sure to unzip the `cache.zip` which has all Clebsch-Gordon tensors up to L=10
 ### Tutorial notebooks
 <font color="green"><b>WARNING: Tess is still actively changing these notebooks, so pull frequently. :) </b></font>
 * Data types: Going between geometric tensors in Cartesian and spherical harmonic bases and representation lists (`Rs`) in `se3cnn`
-  * ( [notebook](https://github.com/blondegeek/e3nn_tutorial/blob/master/data_types.ipynb) // [html](https://github.com/blondegeek/e3nn_tutorial/blob/master/data_types.html) )
+  * ( [notebook](https://github.com/blondegeek/e3nn_tutorial/blob/master/data_types.ipynb) // [html](https://blondegeek.github.io/e3nn_tutorial/data_types.html) )
 * Operations on Spherical Tensors: Visualization of spherical tensor addition and products
   * ( [notebook](https://github.com/blondegeek/e3nn_tutorial/blob/master/operations_on_spherical_tensors.ipynb) // [html](https://blondegeek.github.io/e3nn_tutorial/operations_on_spherical_tensors.html) )
 * Simple Tasks and Symmetry: Using equivariant networks can have unintuitive consequences, we use 3 simple tasks to illustrate how network outputs must have equal or higher symmetry than inputs.
