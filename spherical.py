@@ -3,6 +3,8 @@ import torch
 import utils
 import se3cnn.SO3
 
+from se3cnn.spherical_harmonics import SphericalHarmonicsFindPeaks
+
 __authors__  = "Tess E. Smidt, Mario Geiger"
 
 torch.set_default_dtype(torch.float64)
@@ -153,26 +155,25 @@ class SphericalTensor():
         )
         return cross_corr / normalize_by if normalize else cross_corr
 
-    def find_peaks(self, n=100, min_height=0.1):
-        # Taken from se3cnn.spherical_harmonics
-        x, y, z, f = self.signal_on_sphere(which_mul, n, radius)
-        xyz = torch.stack([x, y, z])
+    def find_peaks(self, which_mul=None, n=100, min_radius=0.1,
+                   percentage=False, absolute_min=0.1, radius=True):
+        import scipy.signal
 
-        beta_pass = []
-        for i in range(f.size(0)):
-            jj, _ = scipy.signal.find_peaks(f[i])
-            beta_pass += [(i, j) for j in jj]
+        if not hasattr(self, 'peak_finder') or self.peak_finder.n != n:
+            L_max = max(L for mult, L in self.Rs)
+            self.peak_finder = SphericalHarmonicsFindPeaks(n, L_max)
 
-        alpha_pass = []
-        for j in range(f.size(1)):
-            ii, _ = scipy.signal.find_peaks(f[:, j])
-            alpha_pass += [(i, j) for i in ii]
+        peaks, radius = self.peak_finder.forward(self.signal) 
 
-        peaks = list(set(beta_pass).intersection(set(alpha_pass)))
-
-        radius = torch.stack([f[i, j] for i, j in peaks]) if peaks else torch.empty(0)
-        peaks = torch.stack([xyz[i, j] for i, j in peaks]) if peaks else torch.empty(0, 3)
-        return peaks, radius
+        if percentage:
+            self.used_radius = max((min_radius * torch.max(radius)),
+                                   absolute_min)
+            keep_indices = (radius > max((min_radius * torch.max(radius)),
+                                         absolute_min))
+        else:
+            self.used_radius = min_radius
+            keep_indices = (radius > min_radius)
+        return peaks[keep_indices] * radius[keep_indices].unsqueeze(-1)
 
     def __add__(self, other):
         if self.Rs == other.Rs:
