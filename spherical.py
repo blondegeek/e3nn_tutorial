@@ -202,3 +202,90 @@ class SphericalTensor():
     def __rmatmul__(self, other):
         # Tensor product
         return self.__matmul__(self, other)
+
+
+class VisualizeKernel():
+    def __init__(self, Kernel):
+        self.kernel = Kernel
+
+    def Ys_on_sphere(self, n=100):
+        x, y, z = (None, None, None)
+        Ys = []
+        L_to_index = {}
+        start = 0
+        for L in self.kernel.set_of_l_filters:
+            # Using cache-able function
+            x, y, z, Y = utils.spherical_harmonics_on_grid(L, n)
+            Ys += [Y]
+            L_to_index[L] = [start, start + 2 * L + 1]
+            start += 2 * L + 1
+
+        return x, y, z, torch.cat(Ys, dim=0), L_to_index
+
+    def plot_data(self, max_radius, n=50, nr=10, min_radius=0.1):
+        """
+        surface = self.plot()
+        fig = go.Figure(data=[surface])
+        fig.show()
+        """
+        import e3nn
+        from e3nn.rs import dim
+
+        Rs_filter = [(1, L) for L in self.kernel.list_of_l_filters]
+
+        x, y, z, Ys, L_to_index = self.Ys_on_sphere(n)
+
+        r_values = torch.linspace(min_radius, max_radius, nr)
+        R = self.kernel.R(r_values).detach()  # [r_values, n_filters]
+
+        R_helper = torch.zeros(R.shape[-1], dim(Rs_filter))
+        start = 0
+        Ys_indices = []
+        for i, (mul, L) in enumerate(Rs_filter):
+            R_helper[i, start: start + 2 * L + 1] = 1.
+            start += 2 * L + 1
+            Ys_indices += list(range(L_to_index[L][0], L_to_index[L][1]))
+
+        full_Ys = Ys[Ys_indices]  # [theta_values, dim(Rs_filter)]]  
+        full_Ys = full_Ys.reshape(full_Ys.shape[0], -1)
+        all_x = (r_values.unsqueeze(-1) * x.flatten().unsqueeze(0)).flatten()
+        all_y = (r_values.unsqueeze(-1) * y.flatten().unsqueeze(0)).flatten()
+        all_z = (r_values.unsqueeze(-1) * z.flatten().unsqueeze(0)).flatten()
+        all_f = torch.einsum('rn,nd,da->rad', R, R_helper, full_Ys)
+        all_f = all_f.reshape(-1, all_f.shape[-1])
+
+        return all_x, all_y, all_z, all_f
+
+    def plot_data_on_grid(self, box_length, n=30):
+        import e3nn
+        from e3nn.rs import dim
+
+        Rs_filter = [(1, L) for L in self.kernel.list_of_l_filters]
+
+        L_to_index = {}
+        start = 0
+        for L in self.kernel.set_of_l_filters:
+            L_to_index[L] = [start, start + 2 * L + 1]
+            start += 2 * L + 1
+
+        r = np.mgrid[-1:1:n * 1j, -1:1:n * 1j, -1:1:n * 1j].reshape(3, -1)
+        r = r.transpose(1, 0)
+        r *= box_length / 2.
+        r = torch.from_numpy(r)
+        print(r.shape)
+        Ys = self.kernel.sh(self.kernel.set_of_l_filters, r)
+        R = self.kernel.R(r.norm(2, -1)).detach()  # [r_values, n_filters]
+
+        R_helper = torch.zeros(R.shape[-1], dim(Rs_filter))
+        start = 0
+        Ys_indices = []
+        for i, (mul, L) in enumerate(Rs_filter):
+            R_helper[i, start: start + 2 * L + 1] = 1.
+            start += 2 * L + 1
+            Ys_indices += list(range(L_to_index[L][0], L_to_index[L][1]))
+
+        full_Ys = Ys[Ys_indices]  # [values, dim(Rs_filter)]]  
+        full_Ys = full_Ys.reshape(full_Ys.shape[0], -1)
+        all_f = torch.einsum('xn,nd,dx->xd', R, R_helper, full_Ys)
+        all_f = all_f.reshape(-1, all_f.shape[-1])
+        return r, all_f
