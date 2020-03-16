@@ -1,12 +1,17 @@
 import numpy as np
 import torch
 import utils
-import se3cnn.SO3
+#import se3cnn.SO3
 import e3nn
-from e3nn.rs import dim, mul_dim
+from e3nn.rs import dim, mul_dim, map_mul_to_Rs
 import e3nn.o3 as o3
 
-from se3cnn.spherical_harmonics import SphericalHarmonicsFindPeaks
+# +
+#from se3cnn.spherical_harmonics import SphericalHarmonicsFindPeaks
+from e3nn.spherical_harmonics import SphericalHarmonicsFindPeaks
+
+
+# -
 
 __authors__  = "Tess E. Smidt, Mario Geiger"
 
@@ -321,13 +326,14 @@ class VisualizeSphericalFunction():
         y_start = 0
         Ys_indices = []
         for mul, L in self.Rs:
-            R_helper[mul_start: mul_start + mul, y_start: y_start + 2 * L + 1] = 1.
-            mul_start += mul
-            y_start += 2 * L + 1
             Ys_indices += list(range(L_to_index[L][0], L_to_index[L][1])) * mul
+
+        R_helper = map_mul_to_Rs(self.Rs)
+        R_helper = R_helper.t()
 
         full_Ys = Ys[Ys_indices]  # [values, dim(Rs)]]  
         full_Ys = full_Ys.reshape(full_Ys.shape[0], -1)
+        
         all_f = torch.einsum('xn,nd,dx->xd', R, R_helper, full_Ys)
         all_f = all_f.reshape(-1, all_f.shape[-1])
         return r, all_f

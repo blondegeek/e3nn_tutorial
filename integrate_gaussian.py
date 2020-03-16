@@ -28,6 +28,52 @@ def parse_basisfile(basisfile):
     return widthO, widthH
 
 
+def parse_whole_basisfile(basisfile):
+    widthO = []
+    widthH = []
+    readnextline = False
+    with open(basisfile,'r') as f:
+        for line in f.readlines():
+            if line.strip():
+                tag = line.split()[0]
+                if readnextline:
+                    scinotation = line.split()[0].replace("D", "E")
+                    if (mode == 'O'):
+                        widthO.append([float(scinotation), orbital_type])
+                    if (mode == 'H'):
+                        widthH.append([float(scinotation), orbital_type])
+                    readnextline = False
+                if tag in ('S','SP','P','D'):
+                    readnextline = True
+                    orbital_type = tag
+                if (tag == 'O'):
+                    mode = 'O'
+                if (tag == 'H'):
+                    mode = 'H'
+    return widthO, widthH
+
+def parse_whole_normfile(normfile):
+    normO = []
+    normH = []
+    readnextline = False
+    with open(normfile,'r') as f:
+        for line in f.readlines():
+            if line.strip():
+                tag = line.split()[0]
+                if (tag == 'O'):
+                    mode = 'O'
+                    readnextline = True
+                elif (tag == 'H'):
+                    mode = 'H'
+                    readnextline = True
+                else:
+                    if readnextline:
+                        if (mode == 'O'):
+                            normO.append(float(line.split()[0]))
+                        if (mode == 'H'):
+                            normH.append(float(line.split()[0]))
+    return normO, normH
+
 def integrate_yo_stuff(basis,coeffs):
     total = 0.0
     wO, wH = basis
