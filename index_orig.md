@@ -1,11 +1,32 @@
 # E(3) Equivariant Neural Network Tutorial
-#### For original tutorial page [click here](/index_orig).
+#### Current tutorial page [click here](/index).
 
-### ([Recommended Reading](#reading) // [Code](#code) // [Slides](https://docs.google.com/presentation/d/1PznWO7HULKSal_fkPttho735UUmNgXXclIT6EQPaeCU/edit?usp=sharing) )
+### ( [Spacetime coordinates](#coords) // [Recommended Reading](#reading) // [Code](#code) // [Slides](https://docs.google.com/presentation/d/1PznWO7HULKSal_fkPttho735UUmNgXXclIT6EQPaeCU/edit?usp=sharing) )
 
-### Tutorials by [Tess E. Smidt](https://crd.lbl.gov/departments/computational-science/ccmc/staff/alvarez-fellows/tess-smidt/) and [Josh Rackers]
+### Tutors: [Tess E. Smidt](https://crd.lbl.gov/departments/computational-science/ccmc/staff/alvarez-fellows/tess-smidt/) and [Risi Kondor](http://people.cs.uchicago.edu/~risi/)
 
-#### Special thanks to [Mario Geiger](https://mariogeiger.ch/), [Ben Miller](http://mathben.com/), [Kostiantyn Lapchevskyi](https://www.linkedin.com/in/klsky/) for all they do for the `e3nn` repo and them, [Daniel Murnane](https://www.linkedin.com/in/daniel-murnane-01277031/), and [Sean Lubner](https://eta.lbl.gov/people/Sean-Lubner) for many conversations that lead to the generation of the tutorial notebooks.
+### A special thanks to [IPAM](http://www.ipam.ucla.edu/) and the organizers of the ["Machine Learning for Physics and the Physics of Learning" Long Program](https://www.ipam.ucla.edu/programs/long-programs/machine-learning-for-physics-and-the-physics-of-learning/?tab=overview) for hosting the tutorial, especially Christian Ratsch, Frank No&#233; and Cecilia Clementi. 
+
+#### Tess would also like to thank [Mario Geiger](https://mariogeiger.ch/), [Ben Miller](http://mathben.com/), [Kostiantyn Lapchevskyi](https://www.linkedin.com/in/klsky/) for all they do for the `se3cnn` repo and them, [Daniel Murnane](https://www.linkedin.com/in/daniel-murnane-01277031/), and [Sean Lubner](https://eta.lbl.gov/people/Sean-Lubner) for many conversations that lead to the generation of the tutorial notebooks.
+
+* * *
+
+## Spacetime coordinates {#coords}
+Thursday, November 14, 2019
+<br>
+10:00 am - noon, 1:30 - 2:30 pm
+<br>
+Main Lecture Hall
+<br>
+Institute for Pure and Applied Mathematics (IPAM)
+<br>
+University of California, Los Angeles
+
+### 10:00 am - noon
+Tutorials with lecture and code
+
+### 1:30 - 2:30 pm
+Remaining topics and open discussion
 
 * * *
 
