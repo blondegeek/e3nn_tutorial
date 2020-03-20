@@ -70,15 +70,17 @@ class SphericalTensor():
         return cls(signal, Rs)
 
     @classmethod
-    def from_geometry_with_radial(cls, RadialModel, vectors, L_max, sum_points=True):
-        radial_functions = RadialModel(vectors)  # [N, R]
+    def from_geometry_with_radial(cls, radial_model, vectors, L_max, sum_points=True):
+        radial_functions = radial_model(vectors)  # [N, R]
         N, R = radial_functions.shape
         Rs = [(R, L) for L in range(L_max + 1)]
         signal = adjusted_projection(vectors, L_max, sum_points=False,
                                      radius=False)  # [channels, N]
         sphten = torch.einsum('nr,cn->cr', radial_functions,
                               signal).reshape(-1)
-        return cls(signal, Rs)
+        new_cls = cls(signal, Rs)
+        new_cls.radial_model = radial_model
+        return new_cls
 
     @classmethod
     def from_decorated_geometry(cls, vectors, features, L_max,
@@ -154,8 +156,16 @@ class SphericalTensor():
 
         return go.Surface(x=x.numpy(), y=y.numpy(), z=z.numpy(), surfacecolor=f.numpy())
 
-    def plot(self, n=100, center=None):
-        pass
+    def plot_with_radial(self, box_length, n=100, center=None,
+                         sh=o3.spherical_harmonics_xyz, n=30):
+        muls, Ls = zip(*Rs)
+        # We assume radial functions are repeated across L's
+        assert len(set(muls)) == 1
+        num_L = len(Rs)
+        new_radial = lambda x: x.repeat(1, num_L) # Repeat along filter dim
+        r, f = plot_data_on_grid(box_length, new_radial, self.Rs, sh=sh, n=n)
+        # Multiply coefficients
+        return r, torch.einsum('xd,d->x', f, self.signal)
 
     def wigner_D_on_grid(self, n):
         try:
@@ -312,9 +322,8 @@ class VisualizeKernel():
         all_f = all_f.reshape(-1, all_f.shape[-1])
         return r, all_f
 
-
-def plot_data_on_grid(box_length, radial, Rs,
-                      sh=o3.spherical_harmonics_xyz, n=30):
+def plot_data_on_grid(box_length, radial, Rs, sh=o3.spherical_harmonics_xyz,
+                      n=30):
     L_to_index = {}
     set_of_L = set([L for mul, L in Rs])
     start = 0
@@ -327,7 +336,7 @@ def plot_data_on_grid(box_length, radial, Rs,
     r *= box_length / 2.
     r = torch.from_numpy(r)
     Ys = sh(set_of_L, r)
-    R = radial(r.norm(2, -1)).detach()  # [r_values, n_filters]
+    R = radial(r.norm(2, -1)).detach()  # [r_values, n_r_filters]
     assert R.shape[-1] == mul_dim(Rs)
 
     R_helper = torch.zeros(R.shape[-1], dim(Rs))
@@ -344,5 +353,4 @@ def plot_data_on_grid(box_length, radial, Rs,
     full_Ys = full_Ys.reshape(full_Ys.shape[0], -1)
     
     all_f = torch.einsum('xn,nd,dx->xd', R, R_helper, full_Ys)
-    all_f = all_f.reshape(-1, all_f.shape[-1])
     return r, all_f
