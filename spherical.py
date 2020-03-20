@@ -70,6 +70,14 @@ class SphericalTensor():
         return cls(signal, Rs)
 
     @classmethod
+    def from_geometry_with_radial(cls, RadialModel, vectors, L_max, sum_points=True):
+        radii = vectors.norm(2, -1)  # [N]
+        radial_functions = RadialModel(radii)  # [R, N]
+        signal = adjusted_projection(vectors, L_max, sum_points=False,
+                                     radius=False)  # [channels, N]
+        return torch.einsum('rn,cn->nrc', radial_functions, signal)
+
+    @classmethod
     def from_decorated_geometry(cls, vectors, features, L_max,
                                 features_Rs=None, sum_points=True,
                                 radius=True):
