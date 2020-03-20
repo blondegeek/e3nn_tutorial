@@ -154,6 +154,9 @@ class SphericalTensor():
 
         return go.Surface(x=x.numpy(), y=y.numpy(), z=z.numpy(), surfacecolor=f.numpy())
 
+    def plot(self, n=100, center=None):
+        pass
+
     def wigner_D_on_grid(self, n):
         try:
             return getattr(self, "wigner_D_grid_{}".format(n))
@@ -310,41 +313,36 @@ class VisualizeKernel():
         return r, all_f
 
 
-class VisualizeSphericalFunction():
-    def __init__(self, radial, Rs, sh=o3.spherical_harmonics_xyz):
-        self.radial = radial
-        self.sh = sh
-        self.Rs = Rs
+def plot_data_on_grid(box_length, radial, Rs,
+                      sh=o3.spherical_harmonics_xyz, n=30):
+    L_to_index = {}
+    set_of_L = set([L for mul, L in Rs])
+    start = 0
+    for L in set_of_L:
+        L_to_index[L] = [start, start + 2 * L + 1]
+        start += 2 * L + 1
 
-    def plot_data_on_grid(self, box_length, n=30):
-        L_to_index = {}
-        set_of_L = set([L for mul, L in self.Rs])
-        start = 0
-        for L in set_of_L:
-            L_to_index[L] = [start, start + 2 * L + 1]
-            start += 2 * L + 1
+    r = np.mgrid[-1:1:n * 1j, -1:1:n * 1j, -1:1:n * 1j].reshape(3, -1)
+    r = r.transpose(1, 0)
+    r *= box_length / 2.
+    r = torch.from_numpy(r)
+    Ys = sh(set_of_L, r)
+    R = radial(r.norm(2, -1)).detach()  # [r_values, n_filters]
+    assert R.shape[-1] == mul_dim(Rs)
 
-        r = np.mgrid[-1:1:n * 1j, -1:1:n * 1j, -1:1:n * 1j].reshape(3, -1)
-        r = r.transpose(1, 0)
-        r *= box_length / 2.
-        r = torch.from_numpy(r)
-        Ys = self.sh(set_of_L, r)
-        R = self.radial(r.norm(2, -1)).detach()  # [r_values, n_filters]
-        assert R.shape[-1] == mul_dim(self.Rs)
+    R_helper = torch.zeros(R.shape[-1], dim(Rs))
+    mul_start = 0
+    y_start = 0
+    Ys_indices = []
+    for mul, L in Rs:
+        Ys_indices += list(range(L_to_index[L][0], L_to_index[L][1])) * mul
 
-        R_helper = torch.zeros(R.shape[-1], dim(self.Rs))
-        mul_start = 0
-        y_start = 0
-        Ys_indices = []
-        for mul, L in self.Rs:
-            Ys_indices += list(range(L_to_index[L][0], L_to_index[L][1])) * mul
+    R_helper = map_mul_to_Rs(Rs)
+    R_helper = R_helper.t()
 
-        R_helper = map_mul_to_Rs(self.Rs)
-        R_helper = R_helper.t()
-
-        full_Ys = Ys[Ys_indices]  # [values, dim(Rs)]]  
-        full_Ys = full_Ys.reshape(full_Ys.shape[0], -1)
-        
-        all_f = torch.einsum('xn,nd,dx->xd', R, R_helper, full_Ys)
-        all_f = all_f.reshape(-1, all_f.shape[-1])
-        return r, all_f
+    full_Ys = Ys[Ys_indices]  # [values, dim(Rs)]]  
+    full_Ys = full_Ys.reshape(full_Ys.shape[0], -1)
+    
+    all_f = torch.einsum('xn,nd,dx->xd', R, R_helper, full_Ys)
+    all_f = all_f.reshape(-1, all_f.shape[-1])
+    return r, all_f
