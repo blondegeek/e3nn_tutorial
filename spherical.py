@@ -156,13 +156,15 @@ class SphericalTensor():
 
         return go.Surface(x=x.numpy(), y=y.numpy(), z=z.numpy(), surfacecolor=f.numpy())
 
-    def plot_with_radial(self, box_length, n=100, center=None,
-                         sh=o3.spherical_harmonics_xyz, n=30):
-        muls, Ls = zip(*Rs)
+    def plot_with_radial(self, box_length, center=None,
+                         sh=o3.spherical_harmonics_xyz, n=30, radial_model=None):
+        muls, Ls = zip(*self.Rs)
         # We assume radial functions are repeated across L's
         assert len(set(muls)) == 1
-        num_L = len(Rs)
-        new_radial = lambda x: x.repeat(1, num_L) # Repeat along filter dim
+        num_L = len(self.Rs)
+        if radial_model is None:
+            radial_model = self.radial_model
+        new_radial = lambda x: radial_model(x).repeat(1, num_L) # Repeat along filter dim
         r, f = plot_data_on_grid(box_length, new_radial, self.Rs, sh=sh, n=n)
         # Multiply coefficients
         return r, torch.einsum('xd,d->x', f, self.signal)
