@@ -3,7 +3,7 @@ import torch
 import utils
 #import se3cnn.SO3
 import e3nn
-from e3nn.rs import dim, mul_dim, map_mul_to_Rs
+import e3nn.rs as rs
 import e3nn.o3 as o3
 
 # +
@@ -37,7 +37,7 @@ def direct_sum(*matrices):
     return out 
 
 
-def adjusted_projection(vectors, L_max, sum_points=True, radius=True):
+def projection(vectors, L_max, sum_points=True, radius=True):
     radii = vectors.norm(2, -1)
     vectors = vectors[radii > 0.]
 
@@ -46,11 +46,20 @@ def adjusted_projection(vectors, L_max, sum_points=True, radius=True):
     else:
         radii = torch.ones_like(radii[radii > 0.])
 
-    angles = se3cnn.SO3.xyz_to_angles(vectors)
-    coeff = se3cnn.SO3.spherical_harmonics_dirac(L_max, *angles)
+    angles = e3nn.o3.xyz_to_angles(vectors)
+    coeff = e3nn.o3.spherical_harmonics_dirac(L_max, *angles)
     coeff *= radii.unsqueeze(-2)
-    
-    A = torch.einsum("ia,ib->ab", (se3cnn.SO3.spherical_harmonics(list(range(L_max + 1)), *angles), coeff))
+    return coeff.sum(-1) if sum_points else coeff
+
+
+def adjusted_projection(vectors, L_max, sum_points=True, radius=True):
+    radii = vectors.norm(2, -1)
+    vectors = vectors[radii > 0.]
+    angles = e3nn.o3.xyz_to_angles(vectors)
+
+    coeff = projection(vectors, L_max, sum_points=False, radius=radius)
+   
+    A = torch.einsum("ia,ib->ab", (e3nn.o3.spherical_harmonics(list(range(L_max + 1)), *angles), coeff))
     try:
         coeff *= torch.lstsq(radii, A).solution.view(-1)
     except:
@@ -70,14 +79,19 @@ class SphericalTensor():
         return cls(signal, Rs)
 
     @classmethod
-    def from_geometry_with_radial(cls, radial_model, vectors, L_max, sum_points=True):
-        radial_functions = radial_model(vectors)  # [N, R]
+    def from_geometry_with_radial(cls, vectors, radial_model, L_max, sum_points=True):
+        r = vectors.norm(2, -1)
+        radial_functions = radial_model(r)  # [N, R]
         N, R = radial_functions.shape
         Rs = [(R, L) for L in range(L_max + 1)]
-        signal = adjusted_projection(vectors, L_max, sum_points=False,
-                                     radius=False)  # [channels, N]
-        sphten = torch.einsum('nr,cn->cr', radial_functions,
-                              signal).reshape(-1)
+        Ys = projection(vectors, L_max, sum_points=False, radius=False)  # [channels, N]
+        mul_map = rs.map_mul_to_Rs(Rs)
+        irrep_map = rs.map_irrep_to_Rs(Rs)
+        signal = torch.einsum('nr,cn,dr,dc->nd',
+                              radial_functions.repeat(1, len(Rs)),
+                              Ys, mul_map, irrep_map)
+        if sum_points:
+            signal = signal.sum(0)
         new_cls = cls(signal, Rs)
         new_cls.radial_model = radial_model
         return new_cls
@@ -157,7 +171,8 @@ class SphericalTensor():
         return go.Surface(x=x.numpy(), y=y.numpy(), z=z.numpy(), surfacecolor=f.numpy())
 
     def plot_with_radial(self, box_length, center=None,
-                         sh=o3.spherical_harmonics_xyz, n=30, radial_model=None):
+                         sh=o3.spherical_harmonics_xyz, n=30,
+                         radial_model=None, relu=True):
         muls, Ls = zip(*self.Rs)
         # We assume radial functions are repeated across L's
         assert len(set(muls)) == 1
@@ -167,7 +182,9 @@ class SphericalTensor():
         new_radial = lambda x: radial_model(x).repeat(1, num_L) # Repeat along filter dim
         r, f = plot_data_on_grid(box_length, new_radial, self.Rs, sh=sh, n=n)
         # Multiply coefficients
-        return r, torch.einsum('xd,d->x', f, self.signal)
+        f = torch.einsum('xd,d->x', f, self.signal)
+        f = f.relu() if relu else f
+        return r, f
 
     def wigner_D_on_grid(self, n):
         try:
@@ -227,9 +244,10 @@ class SphericalTensor():
         # Tensor product
         # Assume first index is Rs
         # Better handle mismatch of features indices
-        Rs_out, C = se3cnn.SO3.reduce_tensor_product(self.Rs, other.Rs)
+        Rs_out, C = e3nn.o3.tensor_product(self.Rs, other.Rs)
         Rs_out = [(mult, L) for mult, L, parity in Rs_out]
-        new_signal = torch.einsum('ijk,i...,j...->k...', 
+        #new_signal = torch.einsum('ijk,i...,j...->k...', 
+        new_signal = torch.einsum('kij,i...,j...->k...', 
                                   (C, self.signal, other.signal))
         return SphericalTensor(new_signal, Rs_out)
 
@@ -237,92 +255,6 @@ class SphericalTensor():
         # Tensor product
         return self.__matmul__(self, other)
 
-
-class VisualizeKernel():
-    def __init__(self, Kernel):
-        self.kernel = Kernel
-
-    def Ys_on_sphere(self, n=100):
-        x, y, z = (None, None, None)
-        Ys = []
-        L_to_index = {}
-        start = 0
-        for L in self.kernel.set_of_l_filters:
-            # Using cache-able function
-            x, y, z, Y = utils.spherical_harmonics_on_grid(L, n)
-            Ys += [Y]
-            L_to_index[L] = [start, start + 2 * L + 1]
-            start += 2 * L + 1
-
-        return x, y, z, torch.cat(Ys, dim=0), L_to_index
-
-    def plot_data(self, max_radius, n=50, nr=10, min_radius=0.1):
-        """
-        surface = self.plot()
-        fig = go.Figure(data=[surface])
-        fig.show()
-        """
-        import e3nn
-        from e3nn.rs import dim
-
-        Rs_filter = [(1, L) for L in self.kernel.list_of_l_filters]
-
-        x, y, z, Ys, L_to_index = self.Ys_on_sphere(n)
-
-        r_values = torch.linspace(min_radius, max_radius, nr)
-        R = self.kernel.R(r_values).detach()  # [r_values, n_filters]
-
-        R_helper = torch.zeros(R.shape[-1], dim(Rs_filter))
-        start = 0
-        Ys_indices = []
-        for i, (mul, L) in enumerate(Rs_filter):
-            R_helper[i, start: start + 2 * L + 1] = 1.
-            start += 2 * L + 1
-            Ys_indices += list(range(L_to_index[L][0], L_to_index[L][1]))
-
-        full_Ys = Ys[Ys_indices]  # [theta_values, dim(Rs_filter)]]  
-        full_Ys = full_Ys.reshape(full_Ys.shape[0], -1)
-        all_x = (r_values.unsqueeze(-1) * x.flatten().unsqueeze(0)).flatten()
-        all_y = (r_values.unsqueeze(-1) * y.flatten().unsqueeze(0)).flatten()
-        all_z = (r_values.unsqueeze(-1) * z.flatten().unsqueeze(0)).flatten()
-        all_f = torch.einsum('rn,nd,da->rad', R, R_helper, full_Ys)
-        all_f = all_f.reshape(-1, all_f.shape[-1])
-
-        return all_x, all_y, all_z, all_f
-
-    def plot_data_on_grid(self, box_length, n=30):
-        import e3nn
-        from e3nn.rs import dim
-
-        Rs_filter = [(1, L) for L in self.kernel.list_of_l_filters]
-
-        L_to_index = {}
-        start = 0
-        for L in self.kernel.set_of_l_filters:
-            L_to_index[L] = [start, start + 2 * L + 1]
-            start += 2 * L + 1
-
-        r = np.mgrid[-1:1:n * 1j, -1:1:n * 1j, -1:1:n * 1j].reshape(3, -1)
-        r = r.transpose(1, 0)
-        r *= box_length / 2.
-        r = torch.from_numpy(r)
-        print(r.shape)
-        Ys = self.kernel.sh(self.kernel.set_of_l_filters, r)
-        R = self.kernel.R(r.norm(2, -1)).detach()  # [r_values, n_filters]
-
-        R_helper = torch.zeros(R.shape[-1], dim(Rs_filter))
-        start = 0
-        Ys_indices = []
-        for i, (mul, L) in enumerate(Rs_filter):
-            R_helper[i, start: start + 2 * L + 1] = 1.
-            start += 2 * L + 1
-            Ys_indices += list(range(L_to_index[L][0], L_to_index[L][1]))
-
-        full_Ys = Ys[Ys_indices]  # [values, dim(Rs_filter)]]  
-        full_Ys = full_Ys.reshape(full_Ys.shape[0], -1)
-        all_f = torch.einsum('xn,nd,dx->xd', R, R_helper, full_Ys)
-        all_f = all_f.reshape(-1, all_f.shape[-1])
-        return r, all_f
 
 def plot_data_on_grid(box_length, radial, Rs, sh=o3.spherical_harmonics_xyz,
                       n=30):
@@ -339,20 +271,19 @@ def plot_data_on_grid(box_length, radial, Rs, sh=o3.spherical_harmonics_xyz,
     r = torch.from_numpy(r)
     Ys = sh(set_of_L, r)
     R = radial(r.norm(2, -1)).detach()  # [r_values, n_r_filters]
-    assert R.shape[-1] == mul_dim(Rs)
+    assert R.shape[-1] == rs.mul_dim(Rs)
 
-    R_helper = torch.zeros(R.shape[-1], dim(Rs))
+    R_helper = torch.zeros(R.shape[-1], rs.dim(Rs))
     mul_start = 0
     y_start = 0
     Ys_indices = []
     for mul, L in Rs:
         Ys_indices += list(range(L_to_index[L][0], L_to_index[L][1])) * mul
 
-    R_helper = map_mul_to_Rs(Rs)
-    R_helper = R_helper.t()
+    R_helper = rs.map_mul_to_Rs(Rs)
 
-    full_Ys = Ys[Ys_indices]  # [values, dim(Rs)]]  
+    full_Ys = Ys[Ys_indices]  # [values, rs.dim(Rs)]]  
     full_Ys = full_Ys.reshape(full_Ys.shape[0], -1)
     
-    all_f = torch.einsum('xn,nd,dx->xd', R, R_helper, full_Ys)
+    all_f = torch.einsum('xn,dn,dx->xd', R, R_helper, full_Ys)
     return r, all_f
