@@ -1,7 +1,7 @@
 # E(3) Equivariant Neural Network Tutorial
 #### For original tutorial page [click here](/index_orig).
 
-### ([Recommended Reading](#reading) // [Code](#code) // [Slides](https://docs.google.com/presentation/d/1PznWO7HULKSal_fkPttho735UUmNgXXclIT6EQPaeCU/edit?usp=sharing) )
+### ([Recommended Reading](#reading) // [Code](#code) // [Slides](https://docs.google.com/presentation/d/1PznWO7HULKSal_fkPttho735UUmNgXXclIT6EQPaeCU/edit?usp=sharing) // [Citing](#cite) // [Feedback](#feedback))
 
 ### Tutorials by [Tess E. Smidt](https://crd.lbl.gov/departments/computational-science/ccmc/staff/alvarez-fellows/tess-smidt/) and [Josh Rackers](https://cfwebprod.sandia.gov/cfdocs/CompResearch/templates/insert/profile.cfm?jracker)
 
@@ -44,7 +44,36 @@ git clone git@github.com:blondegeek/e3nn_tutorial.git
 #### Why notebook AND html?
 For the notebooks that use `plotly` the notebooks are distributed without cells executed because the plots are large (because Tess made them too high-resolution... oops.). If you download the HTML verison, you can interact with the plots without needing to execute the code.
 
-#### Got feedback on the code tutorials?
+### Citing {#cite}
+If you find these tutorials helpful for you research, please consider citing us!
+
+Cite this tutorial with the following `bibtex`:
+```
+COMING SOON
+```
+
+Cite `e3nn` with the following `bibtex`:
+```
+@software{e3nn_2020_3723557,
+  author       = {Mario Geiger and
+                  Tess Smidt and
+                  Benjamin K. Miller and
+                  Wouter Boomsma and
+                  Kostiantyn Lapchevskyi and
+                  Maurice Weiler and
+                  Michał Tyszkiewicz and
+                  Jes Frellsen},
+  title        = {github.com/e3nn/e3nn},
+  month        = mar,
+  year         = 2020,
+  publisher    = {Zenodo},
+  version      = {v0.3-alpha},
+  doi          = {10.5281/zenodo.3723557},
+  url          = {https://doi.org/10.5281/zenodo.3723557}
+}
+```
+
+#### Got feedback on the code tutorials? {#feedback}
 Tess wants to hear all about it, so please, please, please write Tess an email at `tsmidt@lbl.gov` or `blondegeek@gmail.com`! The goal is to make these notebooks maximally useful to others. 
 
 Is there a tutorial you'd love to see? Is there a tutorial you'd like to contribute? Add an issue or make a pull request!
