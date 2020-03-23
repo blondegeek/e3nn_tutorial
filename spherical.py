@@ -1,19 +1,15 @@
 import numpy as np
 import torch
 import utils
-#import se3cnn.SO3
 import e3nn
 import e3nn.rs as rs
+import e3nn
 import e3nn.o3 as o3
 
-# +
-#from se3cnn.spherical_harmonics import SphericalHarmonicsFindPeaks
 from e3nn.spherical_harmonics import SphericalHarmonicsFindPeaks
 
 
-# -
-
-__authors__  = "Tess E. Smidt, Mario Geiger"
+__authors__  = "Tess E. Smidt, Mario Geiger, Josh Rackers"
 
 torch.set_default_dtype(torch.float64)
 
@@ -95,19 +91,6 @@ class SphericalTensor():
         new_cls = cls(signal, Rs)
         new_cls.radial_model = radial_model
         return new_cls
-
-    @classmethod
-    def from_decorated_geometry(cls, vectors, features, L_max,
-                                features_Rs=None, sum_points=True,
-                                radius=True):
-        Rs = [(1, L) for L in range(L_max + 1)]
-        # [Rs, points]
-        geo_signal = adjusted_projection(coords, L_max, sum_points=False, radius=radius)
-        # Keep Rs index for geometry and features
-        new_signal = torch.einsum('gp,pf->fg', (geo_signal, features))
-        new_signal = cls(new_signal, Rs)
-        new_signal.feature_Rs = features_Rs
-        return new_signal
 
     def sph_norm(self):
         Rs = self.Rs
