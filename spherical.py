@@ -244,9 +244,8 @@ class SphericalTensor():
         # Tensor product
         # Assume first index is Rs
         # Better handle mismatch of features indices
-        Rs_out, C = e3nn.o3.tensor_product(self.Rs, other.Rs)
+        Rs_out, C = e3nn.rs.tensor_product(self.Rs, other.Rs)
         Rs_out = [(mult, L) for mult, L, parity in Rs_out]
-        #new_signal = torch.einsum('ijk,i...,j...->k...', 
         new_signal = torch.einsum('kij,i...,j...->k...', 
                                   (C, self.signal, other.signal))
         return SphericalTensor(new_signal, Rs_out)
