@@ -45,22 +45,22 @@ Remaining topics and open discussion
 ## Code {#code}
 For code examples, we will be using the [`se3cnn` repository](https://github.com/mariogeiger/se3cnn). Installation instructions can be found [here](https://github.com/mariogeiger/se3cnn/#installation). To test your installation of `se3cnn`, we recommend running the [following code example](https://github.com/mariogeiger/se3cnn/blob/point/examples/point/tetris.py).
 
-To follow along during the tutorial, we recommend you clone the tutorial repository in addition to installing `se3cnn`.
+To follow along during the (original) tutorial, we recommend you clone the (original) tutorial repository in addition to installing `se3cnn`.
 ```
-git clone git@github.com:blondegeek/e3nn_tutorial.git
+git clone git@github.com:blondegeek/e3nn_tutorial.git --branch 0.0
 ```
 
 Be sure to unzip the `cache.zip` which has all Clebsch-Gordon tensors up to L=10 so that you don't have to compute these locally.
 
 ### Tutorial notebooks
 * Data types: Going between geometric tensors in Cartesian and spherical harmonic bases and representation lists (`Rs`) in `se3cnn`
-  * ( [notebook](https://github.com/blondegeek/e3nn_tutorial/blob/master/data_types.ipynb) // [html](https://blondegeek.github.io/e3nn_tutorial/data_types.html) )
+  * ( [notebook](https://github.com/blondegeek/e3nn_tutorial/blob/0.0/data_types.ipynb) // [html](https://github.com/blondegeek/e3nn_tutorial/blob/0.0/data_types.html) )
 * Operations on Spherical Tensors: Visualization of spherical tensor addition and products
-  * ( [notebook](https://github.com/blondegeek/e3nn_tutorial/blob/master/operations_on_spherical_tensors.ipynb) // [html](https://blondegeek.github.io/e3nn_tutorial/operations_on_spherical_tensors.html) )
+  * ( [notebook](https://github.com/blondegeek/e3nn_tutorial/blob/0.0/operations_on_spherical_tensors.ipynb) // [html](https://github.com/blondegeek/e3nn_tutorial/blob/0.0/operations_on_spherical_tensors.html) )
 * Simple Tasks and Symmetry: Using equivariant networks can have unintuitive consequences, we use 3 simple tasks to illustrate how network outputs must have equal or higher symmetry than inputs.
-  * ( [notebook](https://github.com/blondegeek/e3nn_tutorial/blob/master/simple_tasks_and_symmetry.ipynb) // [html](https://blondegeek.github.io/e3nn_tutorial/simple_tasks_and_symmetry.html) )
+  * ( [notebook](https://github.com/blondegeek/e3nn_tutorial/blob/0.0/simple_tasks_and_symmetry.ipynb) // [html](https://github.com/blondegeek/e3nn_tutorial/blob/0.0/simple_tasks_and_symmetry.ipynb) )
 * Nuts and Bolts of `se3cnn`: A step by step walkthrough of how to set up a convolution and what is going on with all those `partial`s.
-  * ( [notebook](https://github.com/blondegeek/e3nn_tutorial/blob/master/nuts_and_bolts_of_se3cnn.ipynb) )
+  * ( [notebook](https://github.com/blondegeek/e3nn_tutorial/blob/0.0/nuts_and_bolts_of_se3cnn.ipynb) )
 
 #### Why notebook AND html?
 For the notebooks that use `plotly` the notebooks are distributed without cells executed because the plots are large (because Tess made them too high-resolution... oops.). If you download the HTML verison, you can interact with the plots without needing to execute the code.
