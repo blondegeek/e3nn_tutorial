@@ -38,7 +38,7 @@ git clone git@github.com:blondegeek/e3nn_tutorial.git
   * ( [notebook](https://github.com/blondegeek/e3nn_tutorial/blob/master/simple_tasks_and_symmetry.ipynb) // [html](https://blondegeek.github.io/e3nn_tutorial/simple_tasks_and_symmetry.html) )
 * Nuts and Bolts of `e3nn`: A step by step walkthrough of how to set up a convolution and what is going on with all those `partial`s.
   * ( [notebook](https://github.com/blondegeek/e3nn_tutorial/blob/master/nuts_and_bolts_of_e3nn.ipynb) )
-* Electron Density Prediction (by Josh!)
+* Electron Density Prediction (by Josh!) -- COMING SOON
   * ( [notebook](https://github.com/blondegeek/e3nn_tutorial/blob/master/density_tutorial.ipynb) // [html](https://blondegeek.github.io/e3nn_tutorial/density_tutorial.html)
 
 #### Why notebook AND html?
