@@ -22,7 +22,7 @@
 * * *
 
 ## Code {#code}
-For code examples, we will be using the [`e3nn` repository](https://github.com/e3nn/e3nn). Installation instructions can be found [here](https://github.com/e3nn/e3nn/#installation). To test your installation of `e3nn`, we recommend running the [following code example](https://github.com/e3nn/e3nn/blob/point/examples/point/tetris.py).
+For code examples, we will be using the [`e3nn` repository](https://github.com/e3nn/e3nn). Installation instructions can be found [here](https://github.com/e3nn/e3nn/#installation). To test your installation of `e3nn`, we recommend running the [following code example](https://github.com/e3nn/e3nn/blob/master/examples/point/tetris.py).
 
 To follow along during the tutorial, we recommend you clone the tutorial repository in addition to installing `e3nn`.
 ```
