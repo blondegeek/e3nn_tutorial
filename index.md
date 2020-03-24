@@ -54,7 +54,17 @@ The DOI for these tutorials is:
 
 Cite this tutorial with the following `bibtex`:
 ```
-COMING SOON
+@software{e3nn_tutorial_2020_3724982,
+  author       = {Tess Smidt and
+		  Josh Rackers},
+  title        = {github.com/blondegeek/e3nn_tutorial},
+  month        = mar,
+  year         = 2020,
+  publisher    = {Zenodo},
+  version      = {0.1},
+  doi          = {10.5281/zenodo.3724982},
+  url          = {https://doi.org/10.5281/zenodo.3724982}
+}
 ```
 
 The DOI for `e3nn` is:
