@@ -1,5 +1,5 @@
 # E(3) Equivariant Neural Network Tutorial
-#### For original tutorial page [click here](e3nn_tutorial/index_orig).
+#### For original tutorial page [click here](/e3nn_tutorial/index_orig).
 
 ### ([Recommended Reading](#reading) // [Code](#code) // [Slides](https://docs.google.com/presentation/d/1PznWO7HULKSal_fkPttho735UUmNgXXclIT6EQPaeCU/edit?usp=sharing) // [Citing](#cite) // [Feedback](#feedback))
 
