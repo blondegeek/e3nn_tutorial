@@ -49,10 +49,16 @@ For the notebooks that use `plotly` the notebooks are distributed without cells 
 ### Citing {#cite}
 If you find these tutorials helpful for your research, please consider citing us!
 
+The DOI for these tutorials is:
+[![DOI](https://zenodo.org/badge/221095368.svg)](https://zenodo.org/badge/latestdoi/221095368)
+
 Cite this tutorial with the following `bibtex`:
 ```
 COMING SOON
 ```
+
+The DOI for `e3nn` is:
+[![DOI](https://zenodo.org/badge/237431920.svg)](https://zenodo.org/badge/latestdoi/237431920)
 
 Cite `e3nn` with the following `bibtex`:
 ```
