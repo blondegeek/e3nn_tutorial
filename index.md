@@ -1,5 +1,5 @@
 # E(3) Equivariant Neural Network Tutorial
-#### For original tutorial page [click here](/e3nn_tutorial/index_orig).
+#### For original tutorial page [click here](e3nn_tutorial/index_orig).
 
 ### ([Recommended Reading](#reading) // [Code](#code) // [Slides](https://docs.google.com/presentation/d/1PznWO7HULKSal_fkPttho735UUmNgXXclIT6EQPaeCU/edit?usp=sharing) // [Citing](#cite) // [Feedback](#feedback))
 
@@ -47,7 +47,7 @@ git clone git@github.com:blondegeek/e3nn_tutorial.git
 For the notebooks that use `plotly` the notebooks are distributed without cells executed because the plots are large (because Tess made them too high-resolution... oops.). If you download the HTML verison, you can interact with the plots without needing to execute the code.
 
 ### Citing {#cite}
-If you find these tutorials helpful for you research, please consider citing us!
+If you find these tutorials helpful for your research, please consider citing us!
 
 Cite this tutorial with the following `bibtex`:
 ```
