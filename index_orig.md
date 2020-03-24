@@ -1,5 +1,5 @@
 # E(3) Equivariant Neural Network Tutorial
-#### Current tutorial page [click here](/index).
+#### Current tutorial page [click here](/e3nn_tutorial/index).
 
 ### ( [Spacetime coordinates](#coords) // [Recommended Reading](#reading) // [Code](#code) // [Slides](https://docs.google.com/presentation/d/1PznWO7HULKSal_fkPttho735UUmNgXXclIT6EQPaeCU/edit?usp=sharing) )
 
