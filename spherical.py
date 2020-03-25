@@ -1,17 +1,17 @@
+# pylint: disable=no-member, bare-except, invalid-name, missing-docstring, line-too-long
 import numpy as np
 import torch
-import utils
-import e3nn
-import e3nn.rs as rs
+
 import e3nn
 import e3nn.o3 as o3
-
+import e3nn.rs as rs
 from e3nn.spherical_harmonics import SphericalHarmonicsFindPeaks
+import utils
 
-
-__authors__  = "Tess E. Smidt, Mario Geiger, Josh Rackers"
+__authors__ = "Tess E. Smidt, Mario Geiger, Josh Rackers"
 
 torch.set_default_dtype(torch.float64)
+
 
 def direct_sum(*matrices):
     # Slight modification of se3cnn.SO3.direct_sum
@@ -27,10 +27,10 @@ def direct_sum(*matrices):
     i, j = 0, 0
     for x in matrices:
         m, n = x.shape[-2:]
-        out[..., i: i + m, j: j + n] = x 
+        out[..., i: i + m, j: j + n] = x
         i += m
         j += n
-    return out 
+    return out
 
 
 def projection(vectors, L_max, sum_points=True, radius=True):
@@ -54,7 +54,7 @@ def adjusted_projection(vectors, L_max, sum_points=True, radius=True):
     angles = e3nn.o3.xyz_to_angles(vectors)
 
     coeff = projection(vectors, L_max, sum_points=False, radius=radius)
-   
+
     A = torch.einsum("ia,ib->ab", (e3nn.o3.spherical_harmonics(list(range(L_max + 1)), *angles), coeff))
     try:
         coeff *= torch.lstsq(radii, A).solution.view(-1)
@@ -67,7 +67,7 @@ class SphericalTensor():
     def __init__(self, signal, Rs):
         self.signal = signal
         self.Rs = Rs
-    
+
     @classmethod
     def from_geometry(cls, vectors, L_max, sum_points=True, radius=True):
         Rs = [(1, L) for L in range(L_max + 1)]
@@ -77,15 +77,18 @@ class SphericalTensor():
     @classmethod
     def from_geometry_with_radial(cls, vectors, radial_model, L_max, sum_points=True):
         r = vectors.norm(2, -1)
-        radial_functions = radial_model(r)  # [N, R]
-        N, R = radial_functions.shape
+        radial_functions = radial_model(r).repeat(1, L_max + 1)  # [N, R]
+        _N, R = radial_functions.shape
         Rs = [(R, L) for L in range(L_max + 1)]
-        Ys = projection(vectors, L_max, sum_points=False, radius=False)  # [channels, N]
         mul_map = rs.map_mul_to_Rs(Rs)
+        radial_functions = torch.einsum('nr,dr->nd', radial_functions, mul_map)  # [N, signal]
+
+        Ys = projection(vectors, L_max, sum_points=False, radius=False)  # [channels, N]
         irrep_map = rs.map_irrep_to_Rs(Rs)
-        signal = torch.einsum('nr,cn,dr,dc->nd',
-                              radial_functions.repeat(1, len(Rs)),
-                              Ys, mul_map, irrep_map)
+        Ys = torch.einsum('cn,dc->nd', Ys, irrep_map)  # [N, signal]
+
+        signal = Ys * radial_functions  # [N, signal]
+
         if sum_points:
             signal = signal.sum(0)
         new_cls = cls(signal, Rs)
@@ -101,9 +104,8 @@ class SphericalTensor():
         sig_index = 0
         norm_index = 0
         for mul, L in Rs:
-            for m in range(mul):
-                norms[norm_index] = signal[sig_index: sig_index +
-                                           (2 * L + 1)].norm(2, 0)
+            for _ in range(mul):
+                norms[norm_index] = signal[sig_index: sig_index + (2 * L + 1)].norm(2, 0)
                 norm_index += 1
                 sig_index += 2 * L + 1
         return norms
@@ -112,8 +114,7 @@ class SphericalTensor():
         n_mul = sum([mul for mul, L in self.Rs])
         if which_mul:
             if len(which_mul) != n_mul:
-                raise ValueError("which_mul and number of multiplicities is " +
-                                 "not equal.")
+                raise ValueError("which_mul and number of multiplicities is not equal.")
         else:
             which_mul = [1 for i in range(n_mul)]
 
@@ -156,13 +157,15 @@ class SphericalTensor():
     def plot_with_radial(self, box_length, center=None,
                          sh=o3.spherical_harmonics_xyz, n=30,
                          radial_model=None, relu=True):
-        muls, Ls = zip(*self.Rs)
+        muls, _Ls = zip(*self.Rs)
         # We assume radial functions are repeated across L's
         assert len(set(muls)) == 1
         num_L = len(self.Rs)
         if radial_model is None:
             radial_model = self.radial_model
-        new_radial = lambda x: radial_model(x).repeat(1, num_L) # Repeat along filter dim
+
+        def new_radial(x):
+            return radial_model(x).repeat(1, num_L)  # Repeat along filter dim
         r, f = plot_data_on_grid(box_length, new_radial, self.Rs, sh=sh, n=n)
         # Multiply coefficients
         f = torch.einsum('xd,d->x', f, self.signal)
@@ -184,20 +187,18 @@ class SphericalTensor():
             raise ValueError("Rs must match")
         wigner_D = self.wigner_D_on_grid(n)
         normalize_by = (self.signal.norm(2, 0) * other.signal.norm(2, 0))
-        cross_corr =  torch.einsum(
+        cross_corr = torch.einsum(
             'abcji,j,i->abc', (wigner_D, self.signal, other.signal)
         )
         return cross_corr / normalize_by if normalize else cross_corr
 
     def find_peaks(self, which_mul=None, n=100, min_radius=0.1,
                    percentage=False, absolute_min=0.1, radius=True):
-        import scipy.signal
-
         if not hasattr(self, 'peak_finder') or self.peak_finder.n != n:
             L_max = max(L for mult, L in self.Rs)
             self.peak_finder = SphericalHarmonicsFindPeaks(n, L_max)
 
-        peaks, radius = self.peak_finder.forward(self.signal) 
+        peaks, radius = self.peak_finder.forward(self.signal)
 
         if percentage:
             self.used_radius = max((min_radius * torch.max(radius)),
@@ -229,13 +230,13 @@ class SphericalTensor():
         # Better handle mismatch of features indices
         Rs_out, C = e3nn.rs.tensor_product(self.Rs, other.Rs)
         Rs_out = [(mult, L) for mult, L, parity in Rs_out]
-        new_signal = torch.einsum('kij,i...,j...->k...', 
+        new_signal = torch.einsum('kij,i...,j...->k...',
                                   (C, self.signal, other.signal))
         return SphericalTensor(new_signal, Rs_out)
 
     def __rmatmul__(self, other):
         # Tensor product
-        return self.__matmul__(self, other)
+        return self.__matmul__(other)
 
 
 def plot_data_on_grid(box_length, radial, Rs, sh=o3.spherical_harmonics_xyz,
@@ -256,16 +257,14 @@ def plot_data_on_grid(box_length, radial, Rs, sh=o3.spherical_harmonics_xyz,
     assert R.shape[-1] == rs.mul_dim(Rs)
 
     R_helper = torch.zeros(R.shape[-1], rs.dim(Rs))
-    mul_start = 0
-    y_start = 0
     Ys_indices = []
     for mul, L in Rs:
         Ys_indices += list(range(L_to_index[L][0], L_to_index[L][1])) * mul
 
     R_helper = rs.map_mul_to_Rs(Rs)
 
-    full_Ys = Ys[Ys_indices]  # [values, rs.dim(Rs)]]  
+    full_Ys = Ys[Ys_indices]  # [values, rs.dim(Rs)]]
     full_Ys = full_Ys.reshape(full_Ys.shape[0], -1)
-    
+
     all_f = torch.einsum('xn,dn,dx->xd', R, R_helper, full_Ys)
     return r, all_f
