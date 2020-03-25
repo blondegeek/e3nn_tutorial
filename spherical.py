@@ -77,11 +77,13 @@ class SphericalTensor():
     @classmethod
     def from_geometry_with_radial(cls, vectors, radial_model, L_max, sum_points=True):
         r = vectors.norm(2, -1)
-        radial_functions = radial_model(r).repeat(1, L_max + 1)  # [N, R]
+        radial_functions = radial_model(r)
         _N, R = radial_functions.shape
         Rs = [(R, L) for L in range(L_max + 1)]
         mul_map = rs.map_mul_to_Rs(Rs)
-        radial_functions = torch.einsum('nr,dr->nd', radial_functions, mul_map)  # [N, signal]
+        radial_functions = torch.einsum('nr,dr->nd',
+                                        radial_functions.repeat(1, L_max + 1),
+                                        mul_map)  # [N, signal]
 
         Ys = projection(vectors, L_max, sum_points=False, radius=False)  # [channels, N]
         irrep_map = rs.map_irrep_to_Rs(Rs)
