@@ -172,6 +172,10 @@ class SphericalTensor():
         # Multiply coefficients
         f = torch.einsum('xd,d->x', f, self.signal)
         f = f.relu() if relu else f
+
+        if center is not None:
+            r += center.unsqueeze(0)
+
         return r, f
 
     def wigner_D_on_grid(self, n):
