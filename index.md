@@ -3,9 +3,10 @@
 
 ### ([Recommended Reading](#reading) // [Code](#code) // [Slides](https://docs.google.com/presentation/d/1PznWO7HULKSal_fkPttho735UUmNgXXclIT6EQPaeCU/edit?usp=sharing) // [Citing](#cite) // [Feedback](#feedback))
 
-### Tutorials by [Tess E. Smidt](https://crd.lbl.gov/departments/computational-science/ccmc/staff/alvarez-fellows/tess-smidt/) and [Josh Rackers](https://cfwebprod.sandia.gov/cfdocs/CompResearch/templates/insert/profile.cfm?jracker)
+### Tutorials by [Tess E. Smidt](https://crd.lbl.gov/departments/computational-science/ccmc/staff/alvarez-fellows/tess-smidt/)
+(with additional contributions by [Mario Geiger](https://mariogeiger.ch/) and [Josh Rackers](https://cfwebprod.sandia.gov/cfdocs/CompResearch/templates/insert/profile.cfm?jracker))
 
-#### Special thanks to [Mario Geiger](https://e3nn.ch/), [Ben Miller](http://mathben.com/), [Kostiantyn Lapchevskyi](https://www.linkedin.com/in/klsky/) for all they do for the `e3nn` repo and them, [Daniel Murnane](https://www.linkedin.com/in/daniel-murnane-01277031/), and [Sean Lubner](https://eta.lbl.gov/people/Sean-Lubner) for many conversations that lead to the generation of the tutorial notebooks.
+#### Tess gives a special thanks to [Mario Geiger](https://e3nn.ch/), [Ben Miller](http://mathben.com/), [Kostiantyn Lapchevskyi](https://www.linkedin.com/in/klsky/) for all they do for the `e3nn` repo and them, [Daniel Murnane](https://www.linkedin.com/in/daniel-murnane-01277031/), and [Sean Lubner](https://eta.lbl.gov/people/Sean-Lubner) for many conversations that lead to the generation of the tutorial notebooks.
 
 * * *
 
