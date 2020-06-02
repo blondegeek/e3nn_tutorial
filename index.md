@@ -39,10 +39,10 @@ git clone git@github.com:blondegeek/e3nn_tutorial.git
   * ( [notebook](https://github.com/blondegeek/e3nn_tutorial/blob/master/simple_tasks_and_symmetry.ipynb) // [html](https://blondegeek.github.io/e3nn_tutorial/simple_tasks_and_symmetry.html) )
 * Nuts and Bolts of `e3nn`: A step by step walkthrough of how to set up a convolution and what is going on with all those `partial`s.
   * ( [notebook](https://github.com/blondegeek/e3nn_tutorial/blob/master/nuts_and_bolts_of_e3nn.ipynb) )
-* NEW! Plot with radial functions: Now you can plot angular and radial Fourier transforms of geometry
+* Plot with radial functions: Now you can plot angular and radial Fourier transforms of geometry
   * ( [notebook](https://github.com/blondegeek/e3nn_tutorial/blob/master/example_plot_with_radial.ipynb) // [html](https://blondegeek.github.io/e3nn_tutorial/example_plot_with_radial.html) )
-* NEW! Electron Density Prediction (by Josh!) -- COMING SOON
-  * ( [notebook](https://github.com/blondegeek/e3nn_tutorial/blob/master/density_tutorial.ipynb) // [html](https://blondegeek.github.io/e3nn_tutorial/density_tutorial.html)
+* NEW! Creating neighbor lists for molecules and crystals using `e3nn.point.data_helpers`.
+  * ( [notebook](https://github.com/blondegeek/e3nn_tutorial/blob/master/datatypes_for_neighbors.ipynb) )
 
 #### Why notebook AND html?
 For the notebooks that use `plotly` the notebooks are distributed without cells executed because the plots are large (because Tess made them too high-resolution... oops.). If you download the HTML verison, you can interact with the plots without needing to execute the code.
