@@ -57,6 +57,7 @@ Cite this tutorial with the following `bibtex`:
 ```
 @software{e3nn_tutorial_2020_3724982,
   author       = {Tess Smidt and
+		  Mario Geiger and
 		  Josh Rackers},
   title        = {github.com/blondegeek/e3nn_tutorial},
   month        = mar,
