@@ -1,4 +1,7 @@
 # E(3) Equivariant Neural Network Tutorial
+
+#### ‼ This tutorial page is for e3nn verisons < 0.2. Please see the [e3nn User Guide](https://docs.e3nn.org/en/latest/guide/guide.html) for more up to date examples.
+
 #### For original tutorial page [click here](/e3nn_tutorial/index_orig).
 
 ### ([Recommended Reading](#reading) // [Code](#code) // [Slides](https://docs.google.com/presentation/d/1PznWO7HULKSal_fkPttho735UUmNgXXclIT6EQPaeCU/edit?usp=sharing) // [Citing](#cite) // [Feedback](#feedback))
